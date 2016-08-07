@@ -1,0 +1,98 @@
+﻿@model IEnumerable<LOLChampions.Champion>
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Home of the Champions</h2>
+<hr />
+
+<div class="container profile">
+    <div class="col-md-6">
+        @* View Link to create new character will travel to a different view*@
+        @Html.ActionLink("Introduce champion!", "Create", null, new { @class = "btn btn-info" })
+        </div>
+    <div class="col-md-6"
+        @*<br /><br />*@
+        @*This link will still use the index actionresult and perform a search function will inside the view*@
+        @using (Html.BeginForm())
+        {
+            <p class="search">
+                @*created a dropdownlost to concentrate on whatever data exists in "role",
+                    and passed into the controller labelled as "roleType"*@
+                Role: @Html.DropDownList("roleType", ViewData["roleType"] as IEnumerable<SelectListItem>, "All")
+                Champion: @Html.TextBox("SearchString")
+                <input type="submit" value="Search" class="btn btn-default" />
+            </p>
+        }
+    </div>
+    </div>
+
+        <table class="table">
+            <tr class="table-header">
+                <th class="text-center">
+                    Picture
+                </th>
+                <th class="text-center">
+                    Champion
+                </th>
+                <th class="text-center">
+                    Win Rate
+                </th>
+                <th class="text-center">
+                    Fighting Role
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Likes)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Dislikes)
+                </th>
+                <th class="text-center">
+                    Rate the Player
+                </th>
+                <th class="text-center">
+                    Actions
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center">
+                        <img src="@Url.Content(item.Picture)" height="100" />
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.ChampionName)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.WinRate)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Role)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Likes)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Dislikes)
+                    </td>
+                    <td class="text-center">
+                        <ul class="list-inline">
+                            @*Actionlinks used to connect to the controller actionResults*@
+                            @Html.ActionLink("Like", "Like", new { item.id }, new { @class = "btn btn-success" })
+                            @Html.ActionLink("Dislike", "Dislike", new { item.id }, new { @class = "btn btn-warning" })
+                        </ul>
+                    </td>
+                    <td class="text-center">
+                        <ul class="list-inline">
+                            @Html.ActionLink("Edit", "Edit", new { id = item.id }, new { @class = "btn btn-primary" }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.id }, new { @class = "btn btn-primary" }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.id }, new { @class = "btn btn-danger" })
+                        </ul>
+                    </td>
+                </tr>
+            }
+
+        </table>
